@@ -1,0 +1,45 @@
+---
+title: "Melburene city pedestrain traffic"
+author: "Ying Zou"
+date: "2020/7/14"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+### Dataset
+Data was fetched between 2020-07-01 and 2020-07-07 by function ***melb_walk*** in package ***rwalkr***
+```{r pkg1,results='asis',echo=FALSE}
+library(rwalkr)
+start_date <- as.Date("2020-07-01")
+ped_walk <- melb_walk(from = start_date, to = start_date + 6L)
+write.csv(ped_walk,'C:/Users/surfacepro/Desktop/rmd/pedestrainDT.csv',row.names = FALSE)
+```
+
+### View data by top3 rows
+```{r view1,results='asis',echo=FALSE}
+knitr::kable(head(ped_walk,3),caption = 'Data ped_walk Demo')
+```
+
+### Descrition of variable Count
+```{r desc1,echo=FALSE}
+summary(ped_walk$Count)
+```
+**Mean of Count by formular: $\overline{X}=\frac{\sum(X)}{n}$**  
+
+### Plot of Counts by Date
+```{r pressure, echo=FALSE,fig.height=3,fig.width=8,fig.align='center'}
+library(ggplot2)
+ggplot(data = subset(ped_walk, Sensor == "Melbourne Central")) +
+  geom_line(aes(x = Date_Time, y = Count)) +
+  labs(title = 'Distribution of Variable Count By Date_Time')
+```
+
+
